@@ -17,9 +17,11 @@ namespace 统计图形界面1
     {
         [DllImport("DataStreams.dll")]
         public extern static string DllFun();
+        public static Form1 S = null;
         public Form1()
         {
             InitializeComponent();
+            S = this;
  
         }
         private string fileToLoad = " ";
@@ -71,7 +73,7 @@ namespace 统计图形界面1
         {
             
         }
-
+        
         private void Form1_Load(object sender, EventArgs e)
         {
                 this.Resize += new EventHandler(Form1_Resize);//窗体调整大小时引发事件
@@ -182,7 +184,8 @@ namespace 统计图形界面1
             }
             #endregion
         }
-       
+        
+        //用于新建的datatable
         private void 新建ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DataTable dt = new DataTable();
@@ -223,13 +226,15 @@ namespace 统计图形界面1
 
             LoadFromCSVFile();
         }
+        static DataTable table = new DataTable();
+        //建立一个数据表格以供使用
         public void CSV(string pCsvPath)
         {
             try
             {
                 String line;
                 String[] split = null;
-                DataTable table = new DataTable();
+                table = new DataTable();
                 DataRow row = null;
                 StreamReader sr = new StreamReader(pCsvPath, System.Text.Encoding.Default);
                 //创建与数据源对应的数据列 
@@ -325,23 +330,188 @@ namespace 统计图形界面1
         {
             SaveAsCSVFile();
         }
-        private string[,] Readdgv()
+        private string[,] ReaddgvAll()
         {
+            //读取表格中所有内容
             int RowCounts = dataGridView1.Rows.Count;
             int ColumnCounts = dataGridView1.Columns.Count;
             string[,] data = new string[RowCounts,ColumnCounts];
             int m,n;
             for (m = 0; m < RowCounts-1;m++){
-                for (n = 0; n < ColumnCounts-1;n++){
-                    data[m,n] = dataGridView1.Rows[m].Cells[n].Value.ToString();
+                for (n = 0; n < ColumnCounts;n++){
+                    if (dataGridView1.Rows[m].Cells[n].Value != null)
+                    {
+                        data[m,n] = dataGridView1.Rows[m].Cells[n].Value.ToString();
+                    }
+                    else
+                    {
+                        data[m, n] = "";
+                    }
+                    
                 }
             }
             
             return data;
         }
-     
+        private string[,] ReaddgvSelected(int StartRow, int StartColumn, int EndRow, int EndColumn)
+        {
+            //读取表格中的数据
+            //StartRow,StartColumn为起始行和列
+            //EndRow，EndColumn为结束行和列
+            //请注意这里的行和列是从0开始计算的
+            int RowCounts = dataGridView1.Rows.Count;
+            int ColumnCounts = dataGridView1.Columns.Count;
+            string[,] data = new string[RowCounts, ColumnCounts];
+            if (StartRow < 0)
+            {
+                StartRow = 0;
+            }
+            if (StartColumn < 0)
+            {
+                StartColumn = 0;
+            }
+            if (EndRow > RowCounts - 1)
+            {
+                EndRow = RowCounts - 1;
+            }
+            if (EndColumn > ColumnCounts)
+            {
+                EndColumn = ColumnCounts;
+            }
+            int m, n;
+            for (m = StartRow; m < EndRow; m++)
+            {
+                for (n = StartColumn; n < EndColumn; n++)
+                {
+                    if (dataGridView1.Rows[m].Cells[n].Value != null)
+                    {
+                        data[m, n] = dataGridView1.Rows[m].Cells[n].Value.ToString();
+                    }
+                    else
+                    {
+                        data[m, n] = "";
+                    }
 
-        
+                }
+            }
+
+            return data;
+        }
+
+        private static BigNumber[][] StringToBigNumber(string[,] str,int n,string Record)
+        {
+            //这个函数可以将字符串数组转化为BigNumber的锯齿型数组
+            //n为变量数
+            BigNumber[][] data = new BigNumber[n][];
+            int q;
+            int i = 0,j = 0;
+            //GetLength(0),0代表的行数,1代表的列数
+            int data_row = 0;
+            int data_column;
+            int str_empty_counts;
+            //AllEmpty的情况应该事先测试好；
+            char[] separator = { ',' };
+            string[] RecordNumbers = Record.Split(separator);
+            int Empty;
+            int data_Counts = 0;
+            //data_Counts用来给data计数，因为data的行数不能用i表示
+            //i表示字符串数组的行，j表示列
+            //先固定j，然后一行一行往下检测
+            for (j = 0; j < str.GetLength(1);j++){
+                data_column = 0;
+                Empty = 0;
+                //利用foreach语句确认本列是否为空列，有空列则Empty记为1
+                foreach(string FindEmptyColumn in RecordNumbers){
+                    if (FindEmptyColumn == j.ToString())
+                    {
+                        
+                        Empty = 1;
+                    }
+                }
+                if (Empty == 0) {
+                    //如果Empty为0则不是空列，准备读数据
+                    str_empty_counts = 0;
+                    for (q = 0; q < str.GetLength(0) - 1; q++)
+                    {
+                        if (str[q,i].Trim() == "" || str[q,i] == null){
+                            str_empty_counts++;
+                        }
+                    }
+                    MessageBox.Show("字符串行数 = " + (str.GetLength(0) - 1).ToString());
+                    MessageBox.Show("空格数" + (str_empty_counts + 1).ToString());
+                    data[data_Counts] = new BigNumber[str.GetLength(0)- 1 - str_empty_counts];
+                    MessageBox.Show("本列数据数：" + (str.GetLength(0) - 2-str_empty_counts).ToString());
+                    data_Counts++;
+                        // myArray[0] = new int[5] { 1, 3, 5, 7, 9 };
+                    //对数组进行初始化
+                        for (j = 0; j < str.GetLength(0); j++)
+                        {
+                            if (str[j, i] != null)
+                            {
+                                if (str[j, i].Trim() != "")
+                                {
+                                    MessageBox.Show("j = " + j + "i = " + i + "录入BigNumber的值 = " + str[j, i]);
+
+                                    data[data_row][data_column] = new BigNumber(str[j, i].Trim());
+                                    data_column++;
+                                }
+                            }
+                        }
+                }
+            }
+            return data;
+        }
+        //检测是否有空白列
+        private static string IsEmptyColumn (string[,] str){
+            int Counts;
+            int i,j;
+            string[] Record = new string[str.GetLength(1)];
+            int RecordTimes = 0;
+            string ReturnRecord = "";
+            int Find_Not_Empty;
+            for (j = 0; j < str.GetLength(1);j++ )
+            {
+                Counts = 0;
+                for (i = 0; i < str.GetLength(0) - 1;i++){
+                    if (str[i,j].Trim() == "" || str[i,j] == null)
+                    {
+                        Counts = Counts + 1;
+                    }
+                }
+                if (Counts == str.GetLength(0) - 1)
+                {
+                    Record[RecordTimes] = j.ToString();
+                    RecordTimes++;
+                }
+                else
+                {
+                    Record[RecordTimes] = "NOTEMPTY";
+                    RecordTimes++;
+                }
+            }
+            Find_Not_Empty = 0;
+            foreach(string SingleRecord in Record){
+                if (SingleRecord == "NOTEMPTY")
+                {
+                    Find_Not_Empty++;
+                }
+            }
+            if (Find_Not_Empty == 0)
+            {
+                return "AllEmpty";
+            }
+            else
+            {
+                foreach (string ColumnNumber in Record)
+                {
+                    
+                    ReturnRecord = ReturnRecord + "," + ColumnNumber;
+                    
+                }
+                MessageBox.Show("ReturnRecord = " + ReturnRecord);
+                return ReturnRecord;
+            }
+        }
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
@@ -479,14 +649,18 @@ namespace 统计图形界面1
                 }
 
                 //如果列数超过当前列表列数
+                using (DataTable dtable = dgv.DataSource as DataTable)
                 if (columnindex + columnNum + 1 > dgv.ColumnCount)
                 {
                     int mmm = columnNum + columnindex + 1 - dgv.ColumnCount;
                     for (int iii = 0; iii < mmm; iii++)
                     {
-                        dgv.DataBindings.Clear();
+                        
+                            ((DataTable)dataGridView1.DataSource).Columns.Add();
+                        
+                        /*dgv.DataBindings.Clear();
                         DataGridViewTextBoxColumn colum = new DataGridViewTextBoxColumn();
-                        dgv.Columns.Insert(columnindex + 1, colum);
+                        dgv.Columns.Insert(columnindex + 1, colum);*/
                     }
                 }
 
@@ -526,13 +700,29 @@ namespace 统计图形界面1
         }
         void ImportData(DataGridView sourceGridView)
         {
-            if (dataGridView1.DataSource != null) { 
-            ((DataTable)sourceGridView.DataSource).Rows.Add();
+            if (dataGridView1.DataSource as DataTable != null)
+            { 
+            (sourceGridView.DataSource as DataTable).Rows.Add();
             }
-            //  
-            //...............  
-            //  
+            else
+            {
+                table.Rows.Add("");
+            }
+        }
+        public void AddOneColumn(string ColumnName)
+        {
+            if (dataGridView1.DataSource as DataTable != null)
+            {
+                (dataGridView1.DataSource as DataTable).Columns.Add(ColumnName);
+            }
+            else
+            { 
+                table.Columns.Add(ColumnName);
+                
+                //dataGridView1.DataSource = table;
+            }
         }  
+
         private void button_addrow_Click(object sender, EventArgs e)
         {
             if (dataGridView1.DataSource != null)
@@ -545,8 +735,11 @@ namespace 统计图形界面1
         {
             if (dataGridView1.DataSource != null)
             {
+                //dataGridView1.Columns[0].HeaderCell.Value = "编号"; 
                 AddVariable f2 = new AddVariable();
                 f2.ShowDialog();
+                
+                //AddOneColumn("haha");
 
                 /*int ColumnCounts = dataGridView1.Columns.Count;
                 using (DataTable dtable = dataGridView1.DataSource as DataTable)
@@ -555,6 +748,65 @@ namespace 统计图形界面1
                     dataGridView1.DataSource = dtable;
                 }*/
             }
+        }
+
+        private void 粘帖ToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            Paste(dataGridView1);
+        }
+
+        private void 列标题填充ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if( MessageBox.Show( "将首行作为列标题会覆盖列标题原有内容，您确定要这样做吗？", "提示", MessageBoxButtons.YesNo ) == DialogResult.Yes )
+            {
+                int RowCounts = dataGridView1.Rows.Count;
+                int ColumnCounts = dataGridView1.Columns.Count;
+                int m,n;
+                //因为系统默认会多加一行，因此读取时行数要减1
+                for (n = 0; n < ColumnCounts; n++)
+                {
+                    dataGridView1.Columns[n].HeaderCell.Value = dataGridView1.Rows[0].Cells[n].Value.ToString();
+                }
+                for (m = 0; m < RowCounts - 1; m++)
+                {
+                    for (n = 0; n < ColumnCounts; n++)
+                    {
+                        dataGridView1.Rows[m].Cells[n].Value = dataGridView1.Rows[m+1].Cells[n].Value;
+                    }
+                }
+            }
+        }
+
+        private void 汇总ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            string[,] str = ReaddgvAll();
+            string Record = IsEmptyColumn(str);
+            int counts = 0;
+            if (Record != "AllEmpty")
+            {
+                foreach (char SingleN in Record)
+                {
+                    if (SingleN == 'N')
+                    {
+                        counts++;
+                    }
+                }
+                BigNumber[][] NumberSeries = new BigNumber[counts][];
+                NumberSeries = StringToBigNumber(str, counts, Record);
+
+                for (int i = 0; i < NumberSeries[i].Length; i++)
+                {
+                    MessageBox.Show("第" + (i+1).ToString() + "个变量");
+                    // 打印一维数组中的元素
+                    for (int j = 0; j < NumberSeries[i].Length; j++)
+                    {
+                        MessageBox.Show(NumberSeries[i][j].ToString());
+                    }
+                }
+            }
+               
+           
         }
         
        
