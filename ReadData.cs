@@ -422,41 +422,44 @@ namespace 统计图形界面1
                 Empty = 0;
                 //利用foreach语句确认本列是否为空列，有空列则Empty记为1
                 foreach(string FindEmptyColumn in RecordNumbers){
+                    //MessageBox.Show("FindEmptyColumn = " + FindEmptyColumn );
                     if (FindEmptyColumn == j.ToString())
                     {
-                        
                         Empty = 1;
+                        //MessageBox.Show("发现空列");
                     }
                 }
                 if (Empty == 0) {
                     //如果Empty为0则不是空列，准备读数据
                     str_empty_counts = 0;
-                    for (q = 0; q < str.GetLength(0) - 1; q++)
+                    //要计算第j列字符串中的空字符单元格数量
+                    for (q = 0; q < str.GetLength(0); q++)
                     {
-                        if (str[q,i].Trim() == "" || str[q,i] == null){
+                        if (str[q, j] == null)
+                        {
+                            str_empty_counts++;
+                        }
+                        else if (str[q,j].Trim() == "")
+                        {
                             str_empty_counts++;
                         }
                     }
-                    MessageBox.Show("字符串行数 = " + (str.GetLength(0) - 1).ToString());
-                    MessageBox.Show("空格数" + (str_empty_counts + 1).ToString());
-                    data[data_Counts] = new BigNumber[str.GetLength(0)- 1 - str_empty_counts];
-                    MessageBox.Show("本列数据数：" + (str.GetLength(0) - 2-str_empty_counts).ToString());
+                    data[data_Counts] = new BigNumber[str.GetLength(0)- str_empty_counts];
                     data_Counts++;
-                        // myArray[0] = new int[5] { 1, 3, 5, 7, 9 };
                     //对数组进行初始化
-                        for (j = 0; j < str.GetLength(0); j++)
+                        for (i = 0; i < str.GetLength(0); i++)
                         {
-                            if (str[j, i] != null)
+                            if (str[i, j] != null)
                             {
-                                if (str[j, i].Trim() != "")
+                                if (str[i, j].Trim() != "")
                                 {
-                                    MessageBox.Show("j = " + j + "i = " + i + "录入BigNumber的值 = " + str[j, i]);
-
-                                    data[data_row][data_column] = new BigNumber(str[j, i].Trim());
+                                    //MessageBox.Show("i = " + i + "j = " + j + "录入BigNumber的值 = " + str[i, j]+"data_row = "+data_row + "data_column = "+data_column );
+                                    data[data_row][data_column] = new BigNumber(str[i, j].Trim());
                                     data_column++;
                                 }
                             }
                         }
+                        data_row++;
                 }
             }
             return data;
@@ -795,7 +798,7 @@ namespace 统计图形界面1
                 BigNumber[][] NumberSeries = new BigNumber[counts][];
                 NumberSeries = StringToBigNumber(str, counts, Record);
 
-                for (int i = 0; i < NumberSeries[i].Length; i++)
+                for (int i = 0; i < NumberSeries.Length; i++)
                 {
                     MessageBox.Show("第" + (i+1).ToString() + "个变量");
                     // 打印一维数组中的元素
