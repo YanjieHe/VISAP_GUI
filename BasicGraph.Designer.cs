@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.chart_basic = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.dataGridView_subset = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
@@ -51,10 +51,10 @@
             // 
             // chart_basic
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart_basic.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart_basic.Legends.Add(legend1);
+            chartArea2.Name = "ChartArea1";
+            this.chart_basic.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart_basic.Legends.Add(legend2);
             this.chart_basic.Location = new System.Drawing.Point(274, 48);
             this.chart_basic.Name = "chart_basic";
             this.chart_basic.Size = new System.Drawing.Size(677, 428);
@@ -161,13 +161,15 @@
             this.button_save.TabIndex = 15;
             this.button_save.Text = "保存";
             this.button_save.UseVisualStyleBackColor = true;
+            this.button_save.Click += new System.EventHandler(this.button_save_Click);
             // 
             // comboBox_type
             // 
             this.comboBox_type.FormattingEnabled = true;
             this.comboBox_type.Items.AddRange(new object[] {
             "散点图",
-            "折线图"});
+            "折线图",
+            "气泡图"});
             this.comboBox_type.Location = new System.Drawing.Point(90, 87);
             this.comboBox_type.Name = "comboBox_type";
             this.comboBox_type.Size = new System.Drawing.Size(142, 20);

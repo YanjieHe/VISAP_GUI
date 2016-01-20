@@ -341,6 +341,8 @@ namespace 统计图形界面1
             return DataChose;
            
         }
+        public static int SeriesCounts = 0;
+        //用于计算图上序列的数量
         string FindNAs(string ID_x, string ID_y)
         {
             int ColNum_x = 0,ColNum_y = 0;
@@ -387,19 +389,80 @@ namespace 统计图形界面1
             }
             return WarningNAs;
         }
+        public static string ChooseColor(string[] UsedColor)
+        {
+            string[] AllColor = new string[] { "Azure", "NavajoWhite", "Aquamarine", "WhiteSmoke", "MistyRose", "SpringGreen", "Khaki", "Thistle", "DarkKhaki", "Purple", "Beige", "Gainsboro", "DarkGreen", "Orange", "Turquoise", "Lime", "FloralWhite", "Black", "DarkSeaGreen", "Peru", "PaleTurquoise", "RoyalBlue", "Linen", "Tan", "Tomato", "Yellow", "PowderBlue", "PapayaWhip", "Fuschia", "DarkSalmon", "LightYellow", "DeepPink", "Plum", "LightSteelBlue", "DarkGray", "Cornsilk", "DarkBlue", "Chartreuse", "Gray", "Brown", "OldLace", "LemonChiffon", "MediumAquamarine", "Snow", "MediumSpringGreen", "LawnGreen", "PaleVioletRed", "Chocolate", "DimGray", "Sienna", "Gold", "LightCyan", "BurlyWood", "DarkViolet", "Violet", "Orchid", "Moccasin", "IndianRed", "Red", "SlateBlue", "ForestGreen", "Lavender", "MidnightBlue", "LightGoldenrodYellow", "PaleGreen", "HotPink", "Magenta", "DarkRed", "Teal", "LightSkyBlue", "MediumOrchid", "Firebrick", "GreenYellow", "PaleGoldenrod", "BlueViolet", "LightGreen", "DarkTurquoise", "MediumSlateBlue", "Pink", "Wheat", "LightSalmon", "DarkSlateGray", "MediumBlue", "Honeydew", "LimeGreen", "CornflowerBlue", "SlateGray", "DarkCyan", "Navy", "Bisque", "DarkOrange", "MediumSeaGreen", "OrangeRed", "AliceBlue", "MintCream", "OliveDrab", "CadetBlue", "LavenderBlush", "Blue", "Green", "LightSlateGray", "SandyBrown", "MediumVioletRed", "MediumTurquoise", "Cyan", "White", "Crimson", "DarkGoldenrod", "Seashell", "DarkMagena", "AntiqueWhite", "DarkSlateBlue", "LightBlue", "LightPink", "BlanchedAlmond", "DarkOliveGreen", "DarkOrchid", "Salmon", "SkyBlue", "SaddleBrown", "Silver", "Aqua", "DeepSkyBlue", "RosyBrown", "GhostWhite", "LightGray", "SeaGreen", "Maroon", "PeachPuff", "SteelBlue", "MediumPurple", "Ivory", "DodgerBlue", "Indigo", "Coral", "Olive", "YellowGreen", "LightSeaGreen", "LightCoral", "Goldenrod", };
+            //随机扰乱过的所有颜色
+            int SameColor;
+            string ColorChosen;
+            foreach (string EachColor in AllColor)
+            {
+                SameColor = 0;
+                foreach (string EveryColor in UsedColor)
+                {
+                    if (EachColor == EveryColor)
+                    {
+                        SameColor++;
+                    }
+                }
+                if (SameColor == 0)
+                {
+                    ColorChosen = EachColor;
+                    return EachColor;
+                }
+            }
+            return "Black";
+            //这种情况基本不可能出现。。。
+        }
+        string[] UsedColor = new string[140];
+        //记录所有用过的颜色
         void plot_basic()
         {
             string Var_x = comboBox_x.Text;
             string Var_y = comboBox_y.Text;
             string plot_choose = comboBox_type.Text;
-            if (plot_choose == "散点图")
+            if (plot_choose == "散点图" || plot_choose == "折线图" || plot_choose == "气泡图")
             {
-                Series series = new Series("散点图");
-                series.ChartType = SeriesChartType.Point;
+                Series series = new Series();
+                if (plot_choose == "散点图")
+                {
+                    series = new Series("散点图" + SeriesCounts);
+                    series.ChartType = SeriesChartType.Point;
+                }
+                else if (plot_choose == "折线图")
+                {
+                    series = new Series("折线图"+SeriesCounts);
+                    series.ChartType = SeriesChartType.Line;
+                }
+                else if (plot_choose == "气泡图")
+                {
+                    series = new Series("气泡图" + SeriesCounts);
+                    series.ChartType = SeriesChartType.Bubble;
+                }
                 series.BorderWidth = 3;
                 series.MarkerSize = 6;
+                series.MarkerStyle = MarkerStyle.Circle;
                 string ColorToUse = "";
-                ColorToUse = "FireBrick";
+                if (SeriesCounts == 0)
+                {
+                    ColorToUse = "FireBrick";
+                    UsedColor[SeriesCounts] ="FireBrick";
+                }
+                else if (SeriesCounts == 1)
+                {
+                    ColorToUse = "MidnightBlue";
+                    UsedColor[SeriesCounts] ="MidnightBlue";
+                }
+                else if (SeriesCounts > 2 & SeriesCounts<140)
+                {
+                    ColorToUse = ChooseColor(UsedColor);
+                    UsedColor[SeriesCounts] = ColorToUse;
+                }
+                else
+                {
+                    ColorToUse = "Black";
+                }
+                
                 series.Color = Color.FromName(ColorToUse);
                 string BlackList = FindNAs(Var_x, Var_y);
                 double[] X_Points = VectorRead(Var_x,BlackList);
@@ -411,9 +474,13 @@ namespace 统计图形界面1
                 char[] separator = { ',' };
                 string[] MinAndMax = RegulateAll(MathV.MinDouble(X_Points), MathV.MaxDouble(X_Points), 6).Split(separator);
                 chart_basic.Series.Add(series);
+                SeriesCounts++;
                 var XAxis = chart_basic.ChartAreas[0].AxisX;
                 XAxis.Maximum = Convert.ToDouble(MinAndMax[1]);
                 XAxis.Minimum = Convert.ToDouble(MinAndMax[0]);
+                XAxis.MajorGrid.Enabled = false;
+                var YAxis = chart_basic.ChartAreas[0].AxisY;
+                YAxis.MajorGrid.Enabled = false;
             }
         }
         void refresh_Combox()
@@ -442,6 +509,73 @@ namespace 统计图形界面1
         private void button_clear_Click(object sender, EventArgs e)
         {
             chart_basic.Series.Clear();
+            SeriesCounts = 0;
+            for (int i = 0; i < 140; i++)
+            {
+                UsedColor[i] = " ";
+            }
+        }
+
+        private void button_save_Click(object sender, EventArgs e)
+        {
+            bool isSave = true;
+            SaveFileDialog saveImageDialog = new SaveFileDialog();
+            saveImageDialog.Title = "图片保存";
+            saveImageDialog.Filter = @"jpeg|*.jpg|bmp|*.bmp|gif|*.gif";
+
+            if (saveImageDialog.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = saveImageDialog.FileName.ToString();
+
+                if (fileName != "" && fileName != null)
+                {
+                    string fileExtName = fileName.Substring(fileName.LastIndexOf(".") + 1).ToString();
+
+                    System.Drawing.Imaging.ImageFormat imgformat = null;
+
+                    if (fileExtName != "")
+                    {
+                        switch (fileExtName)
+                        {
+                            case "jpg":
+                                imgformat = System.Drawing.Imaging.ImageFormat.Jpeg;
+                                break;
+                            case "bmp":
+                                imgformat = System.Drawing.Imaging.ImageFormat.Bmp;
+                                break;
+                            case "gif":
+                                imgformat = System.Drawing.Imaging.ImageFormat.Gif;
+                                break;
+                            default:
+                                MessageBox.Show("只能存取为: jpg,bmp,gif 格式");
+                                isSave = false;
+                                break;
+                        }
+
+                    }
+
+                    //默认保存为JPG格式   
+                    if (imgformat == null)
+                    {
+                        imgformat = System.Drawing.Imaging.ImageFormat.Jpeg;
+                    }
+
+                    if (isSave)
+                    {
+                        try
+                        {
+                            chart_basic.SaveImage(fileName, imgformat);
+                            //MessageBox.Show("图片已经成功保存!");   
+                        }
+                        catch
+                        {
+                            MessageBox.Show("保存失败,你还没有截取过图片或已经清空图片!");
+                        }
+                    }
+
+                }
+
+            }   
         }
     }
 }
