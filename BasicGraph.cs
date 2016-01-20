@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Windows.Forms.DataVisualization.Charting;
 namespace 统计图形界面1
 {
     public partial class BasicGraph : Form
@@ -33,10 +33,11 @@ namespace 统计图形界面1
             int AddTimes = 1;
             string[] ColWanted = textBox_ChosenCols.Text.Split(separator);
             if (OriginDT != null)
-            { for (int q = 0; q < OriginDT.Rows.Count; q++)
-                                {
-                                    NewDT.Rows.Add();
-                                }
+            { 
+                for (int q = 0; q < OriginDT.Rows.Count; q++)
+                {
+                    NewDT.Rows.Add();
+                }
                 
                     for (int i = 0; i < OriginDT.Columns.Count; i++)
                     {
@@ -237,10 +238,208 @@ namespace 统计图形界面1
         {
             textBox_ChosenCols.Text = RenewCol();
         }
+        static string RegulateAll(double dMin, double dMax, int iMaxAxisNum)
+        {
+            if (iMaxAxisNum < 1 || dMax < dMin)
+                return "NA";
 
+            double dDelta = dMax - dMin;
+            if (dDelta < 1.0) //Modify this by your requirement.
+            {
+                dMax += (1.0 - dDelta) / 2.0;
+                dMin -= (1.0 - dDelta) / 2.0;
+            }
+            dDelta = dMax - dMin;
+
+            int iExp = (int)(Math.Log(dDelta) / Math.Log(10.0)) - 2;
+            double dMultiplier = Math.Pow(10, iExp);
+            double[] dSolutions = new double[] { 1, 2, 2.5, 5, 10, 20, 25, 50, 100, 200, 250, 500 };
+            int i;
+            for (i = 0; i < dSolutions.Length; i++)
+            {
+                double dMultiCal = dMultiplier * dSolutions[i];
+                if (((int)(dDelta / dMultiCal) + 1) <= iMaxAxisNum)
+                {
+                    break;
+                }
+            }
+
+            double dInterval = dMultiplier * dSolutions[i];
+
+            double dStartPoint = ((int)Math.Ceiling(dMin / dInterval) - 1) * dInterval;
+            int iAxisIndex;
+            double dEndPoint = 0;
+            for (iAxisIndex = 0; ; iAxisIndex++)
+            {
+                if (dStartPoint + dInterval * iAxisIndex > dMax)
+                {
+                    dEndPoint = dStartPoint + dInterval * Convert.ToDouble(iAxisIndex);
+                    break;
+                }
+            }
+            return dStartPoint.ToString() + "," + dEndPoint.ToString();
+        }
+        double[] VectorRead(string ID,string WarningNAs)
+        {
+            //读单列
+            int ColNum = 0;
+            for(int i = 0; i < dataGridView_subset.ColumnCount;i++){
+                if (dataGridView_subset.Columns[i].Name == ID)
+                {
+                    ColNum = i;
+                    break;
+                }
+            }
+            int AllRowCounts = dataGridView_subset.RowCount - 1;
+            /*string[] DataReady = new string[AllRowCounts];
+            string EmptyRowStr = "";
+            int CountEmpty = 0;
+            for (int i = 0;i < AllRowCounts ;i++){
+                if (dataGridView_subset.Rows[i].Cells[ColNum].Value == null){
+                    EmptyRowStr = EmptyRowStr + "," + i.ToString();
+                    CountEmpty ++;
+                }
+                else if (dataGridView_subset.Rows[i].Cells[ColNum].Value.ToString().Trim() == ""){
+                    EmptyRowStr = EmptyRowStr + "," + i.ToString();
+                    CountEmpty ++;
+                }
+            }*/
+            //int CountEmpty = 0;
+            char [] separator = {','};
+            int IsNOTEmpty =0;
+            string Temp;
+            foreach(char EachChar in WarningNAs ){
+                if (EachChar == 'N')
+                {
+                    IsNOTEmpty++;
+                }
+            }
+            //MessageBox.Show("WarningNAs: " + WarningNAs);
+            string [] SkipRow = WarningNAs.Split(separator);
+            int DataRows_Count = 0;
+            int IsEmpty = 0;
+            double[] DataChose = new double[IsNOTEmpty];
+            for (int i = 0; i < IsNOTEmpty; i++)
+            {
+                IsEmpty = 0;
+                foreach (string EachRow in SkipRow)
+                {
+                    if (EachRow.Trim() == i.ToString())
+                    {
+                        IsEmpty = 1;
+                    }
+                }
+                if (IsEmpty == 0)
+                {
+                   Temp = dataGridView_subset.Rows[i].Cells[ColNum].Value.ToString();
+                   DataChose[DataRows_Count] = Convert.ToDouble(Temp.Trim());
+                   DataRows_Count++;
+                }
+            }
+            return DataChose;
+           
+        }
+        string FindNAs(string ID_x, string ID_y)
+        {
+            int ColNum_x = 0,ColNum_y = 0;
+            for (int i = 0; i < dataGridView_subset.ColumnCount; i++)
+            {
+                if (dataGridView_subset.Columns[i].Name == ID_x)
+                {
+                    ColNum_x = i;
+                }
+                if (dataGridView_subset.Columns[i].Name == ID_y)
+                {
+                    ColNum_y = i;
+                }
+            }
+            int AllRowCounts = dataGridView_subset.RowCount;
+            string WarningNAs = " ";
+            int CountNA = 0;
+            for (int i = 0; i < AllRowCounts; i++)
+            {
+                if (dataGridView_subset.Rows[i].Cells[ColNum_x].Value == null)
+                {
+                    WarningNAs = WarningNAs + "," +i.ToString();
+                    CountNA++;
+                }
+                else if (dataGridView_subset.Rows[i].Cells[ColNum_x].Value.ToString().Trim() == "")
+                {
+                    WarningNAs = WarningNAs + "," + i.ToString();
+                    CountNA++;
+                }
+                else if (dataGridView_subset.Rows[i].Cells[ColNum_y].Value == null)
+                {
+                    WarningNAs = WarningNAs + "," + i.ToString();
+                    CountNA++;
+                }
+                else if (dataGridView_subset.Rows[i].Cells[ColNum_y].Value.ToString().Trim() == "")
+                {
+                    WarningNAs = WarningNAs + "," + i.ToString();
+                    CountNA++;
+                }
+                else
+                {
+                    WarningNAs = WarningNAs + ",NOEMPTY";
+                }
+            }
+            return WarningNAs;
+        }
+        void plot_basic()
+        {
+            string Var_x = comboBox_x.Text;
+            string Var_y = comboBox_y.Text;
+            string plot_choose = comboBox_type.Text;
+            if (plot_choose == "散点图")
+            {
+                Series series = new Series("随便画的函数图");
+                series.ChartType = SeriesChartType.Point;
+                series.BorderWidth = 3;
+                series.MarkerSize = 6;
+                string ColorToUse = "";
+                ColorToUse = "FireBrick";
+                series.Color = Color.FromName(ColorToUse);
+                string BlackList = FindNAs(Var_x, Var_y);
+                double[] X_Points = VectorRead(Var_x,BlackList);
+                double[] Y_Points = VectorRead(Var_y,BlackList);
+                for (int i = 0; i < X_Points.Length; i++)
+                {
+                    series.Points.AddXY(X_Points[i], Y_Points[i]);
+                }
+                char[] separator = { ',' };
+                string[] MinAndMax = RegulateAll(MathV.MinDouble(X_Points), MathV.MaxDouble(X_Points), 6).Split(separator);
+                chart_basic.Series.Add(series);
+                var XAxis = chart_basic.ChartAreas[0].AxisX;
+                XAxis.Maximum = Convert.ToDouble(MinAndMax[1]);
+                XAxis.Minimum = Convert.ToDouble(MinAndMax[0]);
+            }
+        }
+        void refresh_Combox()
+        {
+            comboBox_x.Items.Clear();
+            comboBox_y.Items.Clear();
+            int ColCounts = dataGridView_subset.ColumnCount;
+            for (int i = 0 ;i < ColCounts ;i++){
+                comboBox_x.Items.Add(dataGridView_subset.Columns[i].Name);
+                comboBox_y.Items.Add(dataGridView_subset.Columns[i].Name);
+            }
+           
+        }
         private void button_import_Click(object sender, EventArgs e)
         {
             ImportOriginData();
+            refresh_Combox();
+           
+        }
+
+        private void button_AddPlot_Click(object sender, EventArgs e)
+        {
+            plot_basic();
+        }
+
+        private void button_clear_Click(object sender, EventArgs e)
+        {
+            chart_basic.Series.Clear();
         }
     }
 }

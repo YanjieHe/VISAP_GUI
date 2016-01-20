@@ -28,53 +28,53 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chart_basic = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridView_subset = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textBox_ChosenCols = new System.Windows.Forms.TextBox();
             this.button_import = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.comboBox_x = new System.Windows.Forms.ComboBox();
+            this.comboBox_y = new System.Windows.Forms.ComboBox();
             this.button_AddPlot = new System.Windows.Forms.Button();
             this.button_clear = new System.Windows.Forms.Button();
             this.button_copy = new System.Windows.Forms.Button();
             this.button_save = new System.Windows.Forms.Button();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.comboBox_type = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.button_refresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart_basic)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_subset)).BeginInit();
             this.SuspendLayout();
             // 
             // chart_basic
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart_basic.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart_basic.Legends.Add(legend1);
+            chartArea3.Name = "ChartArea1";
+            this.chart_basic.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chart_basic.Legends.Add(legend3);
             this.chart_basic.Location = new System.Drawing.Point(274, 48);
             this.chart_basic.Name = "chart_basic";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart_basic.Series.Add(series1);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.chart_basic.Series.Add(series3);
             this.chart_basic.Size = new System.Drawing.Size(677, 428);
             this.chart_basic.TabIndex = 0;
             this.chart_basic.Text = "chart1";
             // 
-            // dataGridView1
+            // dataGridView_subset
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 186);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(220, 287);
-            this.dataGridView1.TabIndex = 4;
+            this.dataGridView_subset.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_subset.Location = new System.Drawing.Point(12, 186);
+            this.dataGridView_subset.Name = "dataGridView_subset";
+            this.dataGridView_subset.RowTemplate.Height = 23;
+            this.dataGridView_subset.Size = new System.Drawing.Size(220, 287);
+            this.dataGridView_subset.TabIndex = 4;
             // 
             // label1
             // 
@@ -112,22 +112,23 @@
             this.button_import.TabIndex = 12;
             this.button_import.Text = "导入数据";
             this.button_import.UseVisualStyleBackColor = true;
+            this.button_import.Click += new System.EventHandler(this.button_import_Click);
             // 
-            // comboBox1
+            // comboBox_x
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(45, 13);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(187, 20);
-            this.comboBox1.TabIndex = 13;
+            this.comboBox_x.FormattingEnabled = true;
+            this.comboBox_x.Location = new System.Drawing.Point(45, 13);
+            this.comboBox_x.Name = "comboBox_x";
+            this.comboBox_x.Size = new System.Drawing.Size(187, 20);
+            this.comboBox_x.TabIndex = 13;
             // 
-            // comboBox2
+            // comboBox_y
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(46, 48);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(186, 20);
-            this.comboBox2.TabIndex = 14;
+            this.comboBox_y.FormattingEnabled = true;
+            this.comboBox_y.Location = new System.Drawing.Point(46, 48);
+            this.comboBox_y.Name = "comboBox_y";
+            this.comboBox_y.Size = new System.Drawing.Size(186, 20);
+            this.comboBox_y.TabIndex = 14;
             // 
             // button_AddPlot
             // 
@@ -137,6 +138,7 @@
             this.button_AddPlot.TabIndex = 1;
             this.button_AddPlot.Text = "添加";
             this.button_AddPlot.UseVisualStyleBackColor = true;
+            this.button_AddPlot.Click += new System.EventHandler(this.button_AddPlot_Click);
             // 
             // button_clear
             // 
@@ -146,6 +148,7 @@
             this.button_clear.TabIndex = 2;
             this.button_clear.Text = "清空";
             this.button_clear.UseVisualStyleBackColor = true;
+            this.button_clear.Click += new System.EventHandler(this.button_clear_Click);
             // 
             // button_copy
             // 
@@ -165,17 +168,17 @@
             this.button_save.Text = "保存";
             this.button_save.UseVisualStyleBackColor = true;
             // 
-            // comboBox3
+            // comboBox_type
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Items.AddRange(new object[] {
+            this.comboBox_type.FormattingEnabled = true;
+            this.comboBox_type.Items.AddRange(new object[] {
             "散点图",
             "折线图"});
-            this.comboBox3.Location = new System.Drawing.Point(90, 87);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(142, 20);
-            this.comboBox3.TabIndex = 16;
-            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
+            this.comboBox_type.Location = new System.Drawing.Point(90, 87);
+            this.comboBox_type.Name = "comboBox_type";
+            this.comboBox_type.Size = new System.Drawing.Size(142, 20);
+            this.comboBox_type.TabIndex = 16;
+            this.comboBox_type.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -204,15 +207,15 @@
             this.ClientSize = new System.Drawing.Size(963, 485);
             this.Controls.Add(this.button_refresh);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.comboBox3);
+            this.Controls.Add(this.comboBox_type);
             this.Controls.Add(this.button_save);
-            this.Controls.Add(this.comboBox2);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.comboBox_y);
+            this.Controls.Add(this.comboBox_x);
             this.Controls.Add(this.button_import);
             this.Controls.Add(this.textBox_ChosenCols);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dataGridView_subset);
             this.Controls.Add(this.button_copy);
             this.Controls.Add(this.button_clear);
             this.Controls.Add(this.button_AddPlot);
@@ -221,7 +224,7 @@
             this.Text = "基本图表";
             this.Load += new System.EventHandler(this.BasicGraph_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart_basic)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_subset)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -230,18 +233,18 @@
         #endregion
 
         private System.Windows.Forms.DataVisualization.Charting.Chart chart_basic;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridView_subset;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox_ChosenCols;
         private System.Windows.Forms.Button button_import;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox comboBox_x;
+        private System.Windows.Forms.ComboBox comboBox_y;
         private System.Windows.Forms.Button button_AddPlot;
         private System.Windows.Forms.Button button_clear;
         private System.Windows.Forms.Button button_copy;
         private System.Windows.Forms.Button button_save;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox comboBox_type;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button_refresh;
     }
