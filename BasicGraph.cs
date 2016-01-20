@@ -314,12 +314,13 @@ namespace 统计图形界面1
                     IsNOTEmpty++;
                 }
             }
+            //MessageBox.Show("IsNotEmpty = " + IsNOTEmpty);
             //MessageBox.Show("WarningNAs: " + WarningNAs);
             string [] SkipRow = WarningNAs.Split(separator);
             int DataRows_Count = 0;
             int IsEmpty = 0;
             double[] DataChose = new double[IsNOTEmpty];
-            for (int i = 0; i < IsNOTEmpty; i++)
+            for (int i = 0; i < AllRowCounts; i++)
             {
                 IsEmpty = 0;
                 foreach (string EachRow in SkipRow)
@@ -331,8 +332,9 @@ namespace 统计图形界面1
                 }
                 if (IsEmpty == 0)
                 {
-                   Temp = dataGridView_subset.Rows[i].Cells[ColNum].Value.ToString();
-                   DataChose[DataRows_Count] = Convert.ToDouble(Temp.Trim());
+                    Temp = dataGridView_subset.Rows[i].Cells[ColNum].Value.ToString();
+                    //MessageBox.Show("第" + i + "行的变量的值为：" + Temp);
+                    DataChose[DataRows_Count] = Convert.ToDouble(Temp.Trim());
                    DataRows_Count++;
                 }
             }
@@ -392,7 +394,7 @@ namespace 统计图形界面1
             string plot_choose = comboBox_type.Text;
             if (plot_choose == "散点图")
             {
-                Series series = new Series("随便画的函数图");
+                Series series = new Series("散点图");
                 series.ChartType = SeriesChartType.Point;
                 series.BorderWidth = 3;
                 series.MarkerSize = 6;

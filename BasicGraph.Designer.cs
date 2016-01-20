@@ -28,9 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.chart_basic = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.dataGridView_subset = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
@@ -52,17 +51,12 @@
             // 
             // chart_basic
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chart_basic.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chart_basic.Legends.Add(legend3);
+            chartArea1.Name = "ChartArea1";
+            this.chart_basic.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart_basic.Legends.Add(legend1);
             this.chart_basic.Location = new System.Drawing.Point(274, 48);
             this.chart_basic.Name = "chart_basic";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.chart_basic.Series.Add(series3);
             this.chart_basic.Size = new System.Drawing.Size(677, 428);
             this.chart_basic.TabIndex = 0;
             this.chart_basic.Text = "chart1";
