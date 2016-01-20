@@ -15,32 +15,161 @@ namespace 统计图形界面1
         public BasicGraph()
         {
             InitializeComponent();
-            textBox_ChosenCols.Text = RenewCols();
+            textBox_ChosenCols.Text=RenewCol();
+
         }
+        void ImportOriginData()
+        {
+            DataTable OriginDT = new DataTable();
+            DataTable NewDT = new DataTable();
+            OriginDT = Form1.S.dataGridView1.DataSource as DataTable ;
+            if (OriginDT == null)
+            {
+                OriginDT = Form1.table;
+            } 
+            DataColumn AddCol = new DataColumn();
+            char [] separator = {','};
+            string UseToAddCol = "";
+            int AddTimes = 1;
+            string[] ColWanted = textBox_ChosenCols.Text.Split(separator);
+            if (OriginDT != null)
+            { for (int q = 0; q < OriginDT.Rows.Count; q++)
+                                {
+                                    NewDT.Rows.Add();
+                                }
+                
+                    for (int i = 0; i < OriginDT.Columns.Count; i++)
+                    {
+                        foreach (string EachCol in ColWanted)
+                        {
+                            if (Convert.ToInt32(EachCol) - 1 == i)
+                            {
+                                NewDT.Columns.Add(OriginDT.Columns[i].ColumnName);
+                                for (int m = 0; m < OriginDT.Rows.Count; m++)
+                                {
+                                    //NewDT.Rows.Add();
+                                    UseToAddCol = OriginDT.Rows[m].ItemArray[i].ToString();
+                                    NewDT.Rows[m][OriginDT.Columns[i].ColumnName] = UseToAddCol;
+                                    AddTimes++;
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+
+            }
+            else 
+            {
+                MessageBox.Show("null");
+            }
+            dataGridView_subset.DataSource = NewDT;
+        }
+        static string RenewCol(){
+            int selectedCellCount =Form1.S.dataGridView1.GetCellCount(DataGridViewElementStates.Selected);
+            int []  ColumnsChosen= new int [selectedCellCount];
+            ColumnsChosen = ColumnsSelected();
+            string AllSelectedCol = "";
+            int Record_Zero = 0;
+            if (ColumnsChosen != new int[] { -1, -1, -1, -1 })
+            {
+                //MessageBox.Show("selectedCellCount = " + selectedCellCount);
+                Array.Sort(ColumnsChosen);
+                for (int i = 0; i < selectedCellCount; i++)
+                {
+                    //MessageBox.Show("ColumnsChosen[i]"+ColumnsChosen[i]);
+                    if (ColumnsChosen[i] >= 0)
+                    {
+                        Record_Zero = i;
+                        break;
+                    }
+                }
+                //MessageBox.Show("i = " + Record_Zero );
+                    
+                    for (int i = Record_Zero; i < selectedCellCount; i++)
+                {
+                    if (i == Record_Zero)
+                    {
+                        AllSelectedCol = (ColumnsChosen[i]+1).ToString();
+
+                    }
+                    else
+                    {
+                        AllSelectedCol = AllSelectedCol + "," + (ColumnsChosen[i]+1).ToString();
+                    }
+                    
+                }
+                
+            }
+            return AllSelectedCol;
+        }
+
         static int[] ColumnsSelected()
         {
-            
+            int counts = 0;
+            int UseToIdentify = 0;
+            int countforNew = 0;
              int selectedCellCount =Form1.S.dataGridView1.GetCellCount(DataGridViewElementStates.Selected);
-             
              if (selectedCellCount > 0)
              {
                  int[] ColumnsChosen = new int[selectedCellCount];
-                 if (Form1.S.dataGridView1.AreAllCellsSelected(true))
+                 for (int i = 0; i < selectedCellCount; i++)
                  {
-                     for (int i = 0; i < Form1.S.dataGridView1.Columns.Count; i++)
-                     {
-                         ColumnsChosen[i] = i;
-                     }
-                    
+                     ColumnsChosen[i] = -100;
                  }
-                 else
-                 {
-                     for (int i = 0;i < selectedCellCount; i++)
+                     if (Form1.S.dataGridView1.AreAllCellsSelected(true))
                      {
-                         ColumnsChosen[i] = Form1.S.dataGridView1.SelectedCells[i].ColumnIndex;
+                         for (int i = 0; i < Form1.S.dataGridView1.Columns.Count; i++)
+                         {
+                             counts = 0;
+                             foreach (int EachCol in ColumnsChosen)
+                             {
+                                 if (EachCol == i)
+                                 {
+                                     counts++;
+                                     break;
+                                 }
+                             }
+                             if (counts == 0)
+                             {
+                                 ColumnsChosen[i] = i;
+
+                             }
+                             else
+                             {
+                                 ColumnsChosen[i] = -100;
+                             }
+
+                         }
+
                      }
-                     
-                 }
+                     else
+                     {
+                         for (int i = 0; i < selectedCellCount; i++)
+                         {
+                             UseToIdentify = Form1.S.dataGridView1.SelectedCells[i].ColumnIndex;
+                             counts = 0;
+                             foreach (int EachCol in ColumnsChosen)
+                             {
+                                 if (EachCol == UseToIdentify)
+                                 {
+                                     counts++;
+                                     break;
+                                 }
+                             }
+                             if (counts == 0)
+                             {
+                                 ColumnsChosen[countforNew] = UseToIdentify;
+                                 countforNew++;
+                             }
+                             else
+                             {
+                                 ColumnsChosen[countforNew] = -100;
+                                 countforNew++;
+                             }
+                         }
+
+                     }
                  return ColumnsChosen;
              }
              return new int[] { -1, -1, -1, -1 };
@@ -103,34 +232,15 @@ namespace 统计图形界面1
         {
 
         }
-        static string RenewCols()
-        {
-            int []  ColumnsChosen= new int [Form1.S.dataGridView1.Columns.Count];
-            ColumnsChosen = ColumnsSelected();
-            string AllSelectedCol = "";
-            if (ColumnsChosen != new int[] { -1, -1, -1, -1 })
-            {
-                Array.Sort(ColumnsChosen);
-                for (int i = 0; i < ColumnsChosen.Length; i++)
-                {
-                    if (i == 0){
-                        AllSelectedCol = (ColumnsChosen[i]+1).ToString();
-                    }
-                    else
-                    {
-                        //只有第一列有可能为0，此后每列都不可能为0
-                        if (ColumnsChosen[i]!= 0)
-                        AllSelectedCol = AllSelectedCol + "," + (ColumnsChosen[i]+1).ToString();
-                    }
-                    
-                }
-            }
-            return AllSelectedCol;
-        }
+
         private void button_refresh_Click(object sender, EventArgs e)
         {
-                textBox_ChosenCols.Text = RenewCols();
-            } 
+            textBox_ChosenCols.Text = RenewCol();
+        }
+
+        private void button_import_Click(object sender, EventArgs e)
+        {
+            ImportOriginData();
         }
     }
-
+}
