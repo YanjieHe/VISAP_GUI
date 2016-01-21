@@ -672,5 +672,27 @@ namespace 统计图形界面1
 
             }   
         }
+
+        private void button_ImportReport_Click(object sender, EventArgs e)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                chart_basic.SaveImage(ms, ChartImageFormat.Jpeg);
+                Bitmap m = new Bitmap(ms);
+                //复制到粘贴板
+                Clipboard.SetImage(m);
+            }
+            //这种做法会使得粘帖板上原有内容丢失
+            Form1.S.rtb.Paste();
+            //Form1.S.richTextBox_onForm1.Size = new Size(200, 163);
+            try
+            {
+                ReportForm.ReportText.richTextBox1.Rtf = Form1.S.rtb.Rtf;
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }
