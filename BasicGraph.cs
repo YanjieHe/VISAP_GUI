@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -517,6 +518,100 @@ namespace 统计图形界面1
         }
 
         private void button_save_Click(object sender, EventArgs e)
+        {
+            bool isSave = true;
+            SaveFileDialog saveImageDialog = new SaveFileDialog();
+            saveImageDialog.Title = "图片保存";
+            saveImageDialog.Filter = @"jpeg|*.jpg|bmp|*.bmp|gif|*.gif";
+
+            if (saveImageDialog.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = saveImageDialog.FileName.ToString();
+
+                if (fileName != "" && fileName != null)
+                {
+                    string fileExtName = fileName.Substring(fileName.LastIndexOf(".") + 1).ToString();
+
+                    System.Drawing.Imaging.ImageFormat imgformat = null;
+
+                    if (fileExtName != "")
+                    {
+                        switch (fileExtName)
+                        {
+                            case "jpg":
+                                imgformat = System.Drawing.Imaging.ImageFormat.Jpeg;
+                                break;
+                            case "bmp":
+                                imgformat = System.Drawing.Imaging.ImageFormat.Bmp;
+                                break;
+                            case "gif":
+                                imgformat = System.Drawing.Imaging.ImageFormat.Gif;
+                                break;
+                            default:
+                                MessageBox.Show("只能存取为: jpg,bmp,gif 格式");
+                                isSave = false;
+                                break;
+                        }
+
+                    }
+
+                    //默认保存为JPG格式   
+                    if (imgformat == null)
+                    {
+                        imgformat = System.Drawing.Imaging.ImageFormat.Jpeg;
+                    }
+
+                    if (isSave)
+                    {
+                        try
+                        {
+                            chart_basic.SaveImage(fileName, imgformat);
+                            //MessageBox.Show("图片已经成功保存!");   
+                        }
+                        catch
+                        {
+                            MessageBox.Show("保存失败,你还没有截取过图片或已经清空图片!");
+                        }
+                    }
+
+                }
+
+            }   
+        }
+
+        private void button_copy_Click(object sender, EventArgs e)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                chart_basic.SaveImage(ms, ChartImageFormat.Jpeg);
+                Bitmap m = new Bitmap(ms);
+                //复制到粘贴板
+                Clipboard.SetImage(m);
+            }
+        }
+
+        private void qToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart_basic.Series.Clear();
+            SeriesCounts = 0;
+            for (int i = 0; i < 140; i++)
+            {
+                UsedColor[i] = " ";
+            }
+        }
+
+        private void 复制ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                chart_basic.SaveImage(ms, ChartImageFormat.Jpeg);
+                Bitmap m = new Bitmap(ms);
+                //复制到粘贴板
+                Clipboard.SetImage(m);
+            }
+        }
+
+        private void 粘贴ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             bool isSave = true;
             SaveFileDialog saveImageDialog = new SaveFileDialog();
