@@ -36,13 +36,17 @@
             this.textBox_Cols = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBox_ColShow = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.comboBox_Confidence = new System.Windows.Forms.ComboBox();
+            this.comboBox_tail = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // button_estimate
             // 
-            this.button_estimate.Location = new System.Drawing.Point(799, 260);
+            this.button_estimate.Location = new System.Drawing.Point(799, 310);
             this.button_estimate.Name = "button_estimate";
-            this.button_estimate.Size = new System.Drawing.Size(230, 93);
+            this.button_estimate.Size = new System.Drawing.Size(230, 43);
             this.button_estimate.TabIndex = 0;
             this.button_estimate.Text = "估计";
             this.button_estimate.UseVisualStyleBackColor = true;
@@ -116,11 +120,61 @@
             this.textBox_ColShow.Size = new System.Drawing.Size(230, 48);
             this.textBox_ColShow.TabIndex = 9;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Location = new System.Drawing.Point(799, 225);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(89, 20);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "置信度：";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label5.Location = new System.Drawing.Point(799, 265);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(89, 20);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "单双尾：";
+            // 
+            // comboBox_Confidence
+            // 
+            this.comboBox_Confidence.FormattingEnabled = true;
+            this.comboBox_Confidence.Items.AddRange(new object[] {
+            "95%",
+            "90%",
+            "99%"});
+            this.comboBox_Confidence.Location = new System.Drawing.Point(933, 229);
+            this.comboBox_Confidence.Name = "comboBox_Confidence";
+            this.comboBox_Confidence.Size = new System.Drawing.Size(96, 20);
+            this.comboBox_Confidence.TabIndex = 14;
+            this.comboBox_Confidence.Text = "95%";
+            // 
+            // comboBox_tail
+            // 
+            this.comboBox_tail.FormattingEnabled = true;
+            this.comboBox_tail.Items.AddRange(new object[] {
+            "双尾",
+            "左单尾",
+            "右单尾"});
+            this.comboBox_tail.Location = new System.Drawing.Point(933, 269);
+            this.comboBox_tail.Name = "comboBox_tail";
+            this.comboBox_tail.Size = new System.Drawing.Size(96, 20);
+            this.comboBox_tail.TabIndex = 15;
+            this.comboBox_tail.Text = "双尾";
+            // 
             // SingleParameterEstimation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1040, 388);
+            this.Controls.Add(this.comboBox_tail);
+            this.Controls.Add(this.comboBox_Confidence);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.textBox_ColShow);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox_Cols);
@@ -147,5 +201,9 @@
         private System.Windows.Forms.TextBox textBox_Cols;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox_ColShow;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox comboBox_Confidence;
+        private System.Windows.Forms.ComboBox comboBox_tail;
     }
 }

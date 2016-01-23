@@ -11,6 +11,7 @@ using Microsoft.CSharp;
 using System.CodeDom.Compiler;
 using System.Reflection;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.IO;
 
 namespace 统计图形界面1
 {
@@ -145,11 +146,120 @@ namespace 统计图形界面1
                 series.Points.AddXY(x, Convert.ToDouble(AllResults[Convert.ToInt32(i)]));
             }
             chart_func.Series.Add(series);
-
         }
         private void button_plot_Click(object sender, EventArgs e)
         {
             FuncRead(Convert.ToDouble(textBox_StartValue.Text), Convert.ToDouble(textBox_EndValue.Text), Convert.ToDouble(textBox_Step.Text));
+        }
+
+        private void button_ImportReport_Click(object sender, EventArgs e)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                chart_func.SaveImage(ms, ChartImageFormat.Jpeg);
+                Bitmap m = new Bitmap(ms);
+                //复制到粘贴板
+                Clipboard.SetImage(m);
+            }
+            //这种做法会使得粘帖板上原有内容丢失
+            if (Form1.S.ReportIsOn == 0)
+            {
+                Form1.S.rtb.Paste();
+            }
+            else
+            {
+
+
+                //Form1.S.richTextBox_onForm1.Size = new Size(200, 163);
+                try
+                {
+                    Form1.S.rtb.Rtf = ReportForm.ReportText.richTextBox1.Rtf;
+                    Form1.S.rtb.Paste();
+                    ReportForm.ReportText.richTextBox1.Rtf = Form1.S.rtb.Rtf;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+        }
+
+        private void 清空ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            chart_func.Series.Clear();
+        }
+
+        private void 复制ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                chart_func.SaveImage(ms, ChartImageFormat.Jpeg);
+                Bitmap m = new Bitmap(ms);
+                //复制到粘贴板
+                Clipboard.SetImage(m);
+            }
+        }
+
+        private void 保存ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool isSave = true;
+            SaveFileDialog saveImageDialog = new SaveFileDialog();
+            saveImageDialog.Title = "图片保存";
+            saveImageDialog.Filter = @"jpeg|*.jpg|bmp|*.bmp|gif|*.gif";
+
+            if (saveImageDialog.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = saveImageDialog.FileName.ToString();
+
+                if (fileName != "" && fileName != null)
+                {
+                    string fileExtName = fileName.Substring(fileName.LastIndexOf(".") + 1).ToString();
+
+                    System.Drawing.Imaging.ImageFormat imgformat = null;
+
+                    if (fileExtName != "")
+                    {
+                        switch (fileExtName)
+                        {
+                            case "jpg":
+                                imgformat = System.Drawing.Imaging.ImageFormat.Jpeg;
+                                break;
+                            case "bmp":
+                                imgformat = System.Drawing.Imaging.ImageFormat.Bmp;
+                                break;
+                            case "gif":
+                                imgformat = System.Drawing.Imaging.ImageFormat.Gif;
+                                break;
+                            default:
+                                MessageBox.Show("只能存取为: jpg,bmp,gif 格式");
+                                isSave = false;
+                                break;
+                        }
+
+                    }
+
+                    //默认保存为JPG格式   
+                    if (imgformat == null)
+                    {
+                        imgformat = System.Drawing.Imaging.ImageFormat.Jpeg;
+                    }
+
+                    if (isSave)
+                    {
+                        try
+                        {
+                            chart_func.SaveImage(fileName, imgformat);
+                            //MessageBox.Show("图片已经成功保存!");   
+                        }
+                        catch
+                        {
+                            MessageBox.Show("保存失败,你还没有截取过图片或已经清空图片!");
+                        }
+                    }
+
+                }
+
+            }   
         }
     }
 }

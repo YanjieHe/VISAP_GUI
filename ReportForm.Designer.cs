@@ -68,6 +68,7 @@
             this.保存ToolStripMenuItem.Name = "保存ToolStripMenuItem";
             this.保存ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.保存ToolStripMenuItem.Text = "保存";
+            this.保存ToolStripMenuItem.Click += new System.EventHandler(this.保存ToolStripMenuItem_Click);
             // 
             // richTextBox1
             // 
@@ -76,7 +77,6 @@
             this.richTextBox1.Size = new System.Drawing.Size(859, 686);
             this.richTextBox1.TabIndex = 1;
             this.richTextBox1.Text = "";
-            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // ReportForm
             // 
@@ -89,6 +89,7 @@
             this.Name = "ReportForm";
             this.Text = "ReportForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReportForm_FormClosing_1);
+            this.TextChanged += new System.EventHandler(this.ReportForm_TextChanged);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

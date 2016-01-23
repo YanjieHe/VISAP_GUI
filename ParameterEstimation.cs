@@ -242,6 +242,19 @@ namespace 统计图形界面1
             int DataNumCounts = 0;
             char[] separator = { ',' };
             int ColNum = 0;
+            string Tail = "";
+            
+            if (comboBox_tail.Text == "左单尾"){
+                Tail = "less";
+            }
+            else if(comboBox_tail.Text == "左单尾"){
+                Tail = "greater";
+            }
+            else{
+                 Tail = "two";
+            }
+            double alpha = Convert.ToDouble(comboBox_Confidence.Text.Trim('%'));
+             alpha = alpha / 100;
             BigNumber[][] NumberSeries = new BigNumber[Form1.S.dataGridView1.Rows.Count - 1][];
             //定义了一个锯齿数组
             int BigNumTimes = 0;
@@ -249,7 +262,7 @@ namespace 统计图形界面1
             if (textBox_ColShow.Text.Trim() != "")
             {
                 string [] AllColsToRead = textBox_ColShow.Text.Trim().Split(separator);
-                result = result + "置信度：95%\r\n"+Form1.S.AdjustStr("变量名") +"\t" +Form1.S.AdjustStr("样本数")+"\t"+Form1.S.AdjustStr("均值") +  "\t" +Form1.S.AdjustStr("标准差") + "\t" + Form1.S.AdjustStr("置信上限") + "\t" + Form1.S.AdjustStr("置信下限") + "\r\n";
+                result = result + "置信度："+comboBox_Confidence.Text+"\r\n"+Form1.S.AdjustStr("变量名") +"\t" +Form1.S.AdjustStr("样本数")+"\t"+Form1.S.AdjustStr("均值") +  "\t" +Form1.S.AdjustStr("标准差") + "\t" + Form1.S.AdjustStr("置信上限") + "\t" + Form1.S.AdjustStr("置信下限") + "\r\n";
                 int UseToCount = 0;
                 foreach (string SingleCol in AllColsToRead)
                 {
@@ -274,25 +287,8 @@ namespace 统计图形界面1
                                 break;
                             }
                         }
-                        //MessageBox.Show("BigNumTime = " + BigNumTimes + "SingleCol = " + SingleCol);
                         result = result + Form1.S.VariableNamePolish(Form1.S.dataGridView1.Columns[ColNum].HeaderCell.Value.ToString());
-                        /*MessageBox.Show("result  = " + result);
-                        int ii = 1;
-                        foreach (BigNumber Num in VectorReadASBigNum(SingleCol.Trim(), FindNAs(SingleCol.Trim())))
-                        {
-
-                            MessageBox.Show("Num = " + Num+ "第"+ii+"次");
-                            ii++;
-                        }*/
                         NumberSeries[BigNumTimes] = VectorReadASBigNum(SingleCol.Trim(),FindNAs(SingleCol.Trim()));
-                       
-                        /*ii = 1;
-                        foreach (BigNumber Num in NumberSeries[0])
-                        {
-
-                            MessageBox.Show("Num = " + Num + "第" + ii + "次");
-                            ii++;
-                        }*/
                         Mean = Stat.Mean(NumberSeries[BigNumTimes]);
                         result = result + "\t" + NumberSeries[BigNumTimes].Length.ToString().PadLeft(12, ' ') + "\t" + MathV.NumberPolish(Mean.ToString()).ToString().PadLeft(12, ' ') + "\t";
                         if (NumberSeries[BigNumTimes].Length == 1)
@@ -303,8 +299,11 @@ namespace 统计图形界面1
                         {
                             Variance = Stat.Variance(NumberSeries[BigNumTimes]);
                             result = result +MathV.NumberPolish(Stat.Variance(NumberSeries[BigNumTimes]).Power(new BigNumber("0.5"), 30).ToString()).PadLeft(12, ' ');
-                            WholeCI = Stat.CI1(Mean,Variance,new BigNumber("-1"),new BigNumber(NumberSeries[BigNumTimes].Length.ToString()),0.95,"two","Mean.Esti").Split(separator);
+                            //MessageBox.Show(result);
+                            //MessageBox.Show("1-alpha = " + (1 - alpha).ToString() + "Tail " + Tail);
+                            WholeCI = Stat.CI1(Mean,Variance,new BigNumber("-1"),new BigNumber(NumberSeries[BigNumTimes].Length.ToString()),1-alpha ,Tail,"Mean.Esti").Split(separator);
                             result = result +"\t"+MathV.NumberPolish(WholeCI[0])+"\t"+MathV.NumberPolish(WholeCI[1])+"\r\n";
+                            //MessageBox.Show(result);
                          }
                        
                         BigNumTimes++;
