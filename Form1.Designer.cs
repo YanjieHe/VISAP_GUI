@@ -70,8 +70,11 @@
             this.tabControl_data = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.richTextBox_code = new System.Windows.Forms.RichTextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button_break = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
             this.button_repeat = new System.Windows.Forms.Button();
             this.textBox_repeat = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -82,7 +85,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.button_insertIf = new System.Windows.Forms.Button();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabPage_initValues = new System.Windows.Forms.TabPage();
+            this.comboBox_type = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -102,12 +106,19 @@
             this.button_InsertExpression = new System.Windows.Forms.Button();
             this.textBox_expression = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.textBox_ranName = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.button_random = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
             this.button_save = new System.Windows.Forms.Button();
             this.button_import = new System.Windows.Forms.Button();
             this.button_encode = new System.Windows.Forms.Button();
-            this.textBox_code = new System.Windows.Forms.TextBox();
             this.textBox_console = new System.Windows.Forms.TextBox();
-            this.comboBox_type = new System.Windows.Forms.ComboBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.textBox_initValues = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.comboBox_ArrayType = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.contextMenuStrip_dgv_form1.SuspendLayout();
@@ -116,8 +127,9 @@
             this.tabPage2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.tabPage4.SuspendLayout();
+            this.tabPage_initValues.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            this.tabPage6.SuspendLayout();
             this.SuspendLayout();
             // 
             // 开始ToolStripMenuItem
@@ -462,11 +474,11 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.richTextBox_code);
             this.tabPage2.Controls.Add(this.tabControl1);
             this.tabPage2.Controls.Add(this.button_save);
             this.tabPage2.Controls.Add(this.button_import);
             this.tabPage2.Controls.Add(this.button_encode);
-            this.tabPage2.Controls.Add(this.textBox_code);
             this.tabPage2.Controls.Add(this.textBox_console);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -476,11 +488,24 @@
             this.tabPage2.Text = "代码";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // richTextBox_code
+            // 
+            this.richTextBox_code.BulletIndent = 10000;
+            this.richTextBox_code.Location = new System.Drawing.Point(233, 161);
+            this.richTextBox_code.Name = "richTextBox_code";
+            this.richTextBox_code.RightMargin = 10000;
+            this.richTextBox_code.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
+            this.richTextBox_code.Size = new System.Drawing.Size(715, 237);
+            this.richTextBox_code.TabIndex = 9;
+            this.richTextBox_code.Text = "";
+            this.richTextBox_code.WordWrap = false;
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage_initValues);
             this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Location = new System.Drawing.Point(6, 8);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -489,6 +514,8 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.button_break);
+            this.tabPage3.Controls.Add(this.label13);
             this.tabPage3.Controls.Add(this.button_repeat);
             this.tabPage3.Controls.Add(this.textBox_repeat);
             this.tabPage3.Controls.Add(this.label9);
@@ -506,6 +533,26 @@
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "控制";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // button_break
+            // 
+            this.button_break.Location = new System.Drawing.Point(145, 214);
+            this.button_break.Name = "button_break";
+            this.button_break.Size = new System.Drawing.Size(61, 23);
+            this.button_break.TabIndex = 11;
+            this.button_break.Text = "插入";
+            this.button_break.UseVisualStyleBackColor = true;
+            this.button_break.Click += new System.EventHandler(this.button_break_Click);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label13.Location = new System.Drawing.Point(6, 213);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(85, 19);
+            this.label13.TabIndex = 10;
+            this.label13.Text = "跳出循环";
             // 
             // button_repeat
             // 
@@ -601,28 +648,44 @@
             this.button_insertIf.UseVisualStyleBackColor = true;
             this.button_insertIf.Click += new System.EventHandler(this.button_insertIf_Click);
             // 
-            // tabPage4
+            // tabPage_initValues
             // 
-            this.tabPage4.Controls.Add(this.comboBox_type);
-            this.tabPage4.Controls.Add(this.label16);
-            this.tabPage4.Controls.Add(this.label11);
-            this.tabPage4.Controls.Add(this.label12);
-            this.tabPage4.Controls.Add(this.textBox2_varValue);
-            this.tabPage4.Controls.Add(this.button_defindeVariable);
-            this.tabPage4.Controls.Add(this.textBox_var);
-            this.tabPage4.Controls.Add(this.textBox_SequenceLength);
-            this.tabPage4.Controls.Add(this.label14);
-            this.tabPage4.Controls.Add(this.label18);
-            this.tabPage4.Controls.Add(this.label17);
-            this.tabPage4.Controls.Add(this.textBox_sequenceName);
-            this.tabPage4.Controls.Add(this.button_InsertSequence);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(213, 368);
-            this.tabPage4.TabIndex = 1;
-            this.tabPage4.Text = "变量";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.tabPage_initValues.Controls.Add(this.comboBox_ArrayType);
+            this.tabPage_initValues.Controls.Add(this.button1);
+            this.tabPage_initValues.Controls.Add(this.textBox_initValues);
+            this.tabPage_initValues.Controls.Add(this.label20);
+            this.tabPage_initValues.Controls.Add(this.comboBox_type);
+            this.tabPage_initValues.Controls.Add(this.label16);
+            this.tabPage_initValues.Controls.Add(this.label11);
+            this.tabPage_initValues.Controls.Add(this.label12);
+            this.tabPage_initValues.Controls.Add(this.textBox2_varValue);
+            this.tabPage_initValues.Controls.Add(this.button_defindeVariable);
+            this.tabPage_initValues.Controls.Add(this.textBox_var);
+            this.tabPage_initValues.Controls.Add(this.textBox_SequenceLength);
+            this.tabPage_initValues.Controls.Add(this.label14);
+            this.tabPage_initValues.Controls.Add(this.label18);
+            this.tabPage_initValues.Controls.Add(this.label17);
+            this.tabPage_initValues.Controls.Add(this.textBox_sequenceName);
+            this.tabPage_initValues.Controls.Add(this.button_InsertSequence);
+            this.tabPage_initValues.Location = new System.Drawing.Point(4, 22);
+            this.tabPage_initValues.Name = "tabPage_initValues";
+            this.tabPage_initValues.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_initValues.Size = new System.Drawing.Size(213, 368);
+            this.tabPage_initValues.TabIndex = 1;
+            this.tabPage_initValues.Text = "变量";
+            this.tabPage_initValues.UseVisualStyleBackColor = true;
+            // 
+            // comboBox_type
+            // 
+            this.comboBox_type.FormattingEnabled = true;
+            this.comboBox_type.Items.AddRange(new object[] {
+            "整型",
+            "单精度",
+            "双精度"});
+            this.comboBox_type.Location = new System.Drawing.Point(10, 85);
+            this.comboBox_type.Name = "comboBox_type";
+            this.comboBox_type.Size = new System.Drawing.Size(77, 20);
+            this.comboBox_type.TabIndex = 25;
             // 
             // label16
             // 
@@ -801,6 +864,56 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "表达式：";
             // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.textBox_ranName);
+            this.tabPage6.Controls.Add(this.label19);
+            this.tabPage6.Controls.Add(this.button_random);
+            this.tabPage6.Controls.Add(this.label15);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Size = new System.Drawing.Size(213, 368);
+            this.tabPage6.TabIndex = 3;
+            this.tabPage6.Text = "功能";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // textBox_ranName
+            // 
+            this.textBox_ranName.Location = new System.Drawing.Point(83, 27);
+            this.textBox_ranName.Name = "textBox_ranName";
+            this.textBox_ranName.Size = new System.Drawing.Size(127, 21);
+            this.textBox_ranName.TabIndex = 5;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label19.Location = new System.Drawing.Point(3, 27);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(85, 19);
+            this.label19.TabIndex = 4;
+            this.label19.Text = "变量名：";
+            // 
+            // button_random
+            // 
+            this.button_random.Location = new System.Drawing.Point(138, 56);
+            this.button_random.Name = "button_random";
+            this.button_random.Size = new System.Drawing.Size(75, 23);
+            this.button_random.TabIndex = 3;
+            this.button_random.Text = "插入";
+            this.button_random.UseVisualStyleBackColor = true;
+            this.button_random.Click += new System.EventHandler(this.button_random_Click);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label15.Location = new System.Drawing.Point(3, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(123, 19);
+            this.label15.TabIndex = 1;
+            this.label15.Text = "随机数生成：";
+            // 
             // button_save
             // 
             this.button_save.Location = new System.Drawing.Point(884, 86);
@@ -809,6 +922,7 @@
             this.button_save.TabIndex = 5;
             this.button_save.Text = "保存";
             this.button_save.UseVisualStyleBackColor = true;
+            this.button_save.Click += new System.EventHandler(this.button_save_Click);
             // 
             // button_import
             // 
@@ -818,6 +932,7 @@
             this.button_import.TabIndex = 4;
             this.button_import.Text = "导入";
             this.button_import.UseVisualStyleBackColor = true;
+            this.button_import.Click += new System.EventHandler(this.button_import_Click);
             // 
             // button_encode
             // 
@@ -829,15 +944,6 @@
             this.button_encode.UseVisualStyleBackColor = true;
             this.button_encode.Click += new System.EventHandler(this.button_encode_Click);
             // 
-            // textBox_code
-            // 
-            this.textBox_code.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox_code.Location = new System.Drawing.Point(233, 161);
-            this.textBox_code.Multiline = true;
-            this.textBox_code.Name = "textBox_code";
-            this.textBox_code.Size = new System.Drawing.Size(715, 238);
-            this.textBox_code.TabIndex = 2;
-            // 
             // textBox_console
             // 
             this.textBox_console.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -848,17 +954,44 @@
             this.textBox_console.Size = new System.Drawing.Size(562, 151);
             this.textBox_console.TabIndex = 1;
             // 
-            // comboBox_type
+            // label20
             // 
-            this.comboBox_type.FormattingEnabled = true;
-            this.comboBox_type.Items.AddRange(new object[] {
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label20.Location = new System.Drawing.Point(6, 218);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(123, 19);
+            this.label20.TabIndex = 26;
+            this.label20.Text = "数组初始值：";
+            // 
+            // textBox_initValues
+            // 
+            this.textBox_initValues.Location = new System.Drawing.Point(10, 240);
+            this.textBox_initValues.Name = "textBox_initValues";
+            this.textBox_initValues.Size = new System.Drawing.Size(187, 21);
+            this.textBox_initValues.TabIndex = 27;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(129, 267);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 28;
+            this.button1.Text = "插入";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // comboBox_ArrayType
+            // 
+            this.comboBox_ArrayType.FormattingEnabled = true;
+            this.comboBox_ArrayType.Items.AddRange(new object[] {
             "整型",
             "单精度",
             "双精度"});
-            this.comboBox_type.Location = new System.Drawing.Point(10, 85);
-            this.comboBox_type.Name = "comboBox_type";
-            this.comboBox_type.Size = new System.Drawing.Size(77, 20);
-            this.comboBox_type.TabIndex = 25;
+            this.comboBox_ArrayType.Location = new System.Drawing.Point(10, 194);
+            this.comboBox_ArrayType.Name = "comboBox_ArrayType";
+            this.comboBox_ArrayType.Size = new System.Drawing.Size(77, 20);
+            this.comboBox_ArrayType.TabIndex = 29;
             // 
             // Form1
             // 
@@ -883,10 +1016,12 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage4.PerformLayout();
+            this.tabPage_initValues.ResumeLayout(false);
+            this.tabPage_initValues.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -942,7 +1077,6 @@
         private System.Windows.Forms.Button button_save;
         private System.Windows.Forms.Button button_import;
         private System.Windows.Forms.Button button_encode;
-        private System.Windows.Forms.TextBox textBox_code;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
@@ -963,7 +1097,7 @@
         private System.Windows.Forms.Button button_InsertSequence;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage tabPage_initValues;
         private System.Windows.Forms.TextBox textBox_console;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Label label3;
@@ -973,6 +1107,18 @@
         private System.Windows.Forms.Button button_print;
         private System.Windows.Forms.TextBox textBox_print;
         private System.Windows.Forms.ComboBox comboBox_type;
+        private System.Windows.Forms.RichTextBox richTextBox_code;
+        private System.Windows.Forms.Button button_break;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.Button button_random;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox textBox_ranName;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox_initValues;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.ComboBox comboBox_ArrayType;
 
     }
 }
